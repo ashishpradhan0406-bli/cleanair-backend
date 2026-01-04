@@ -8,6 +8,7 @@ connectDB();
 
 const app = express();
 app.use(express.json());
+app.use("/api/ai", aiRoutes);
 
 // Health check
 app.get("/", (req, res) => {
