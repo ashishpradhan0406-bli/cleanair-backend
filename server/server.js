@@ -8,17 +8,17 @@ connectDB();
 
 const app = express();
 app.use(express.json());
-app.use("/api/ai", aiRoutes);
 
-// Health check
+// Test route
 app.get("/", (req, res) => {
   res.send("CleanAir Hub Backend Running");
 });
 
-// Mount AI routes
+// AI routes
 app.use("/api/ai", aiRoutes);
 
 const PORT = process.env.PORT || 5001;
+
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
