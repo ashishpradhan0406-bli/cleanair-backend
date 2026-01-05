@@ -17,14 +17,28 @@ router.post("/review-summary", async (req, res) => {
 
     const response = await openai.responses.create({
       model: "gpt-4.1-mini",
-      input: `Summarize this customer review briefly:\n\n${reviews}`,
+      temperature: 0.7, // 🔥 IMPORTANT
+      input: [
+        {
+          role: "system",
+          content:
+            "You are an assistant that summarizes customer product reviews clearly, mentioning positives and negatives.",
+        },
+        {
+          role: "user",
+          content: reviews,
+        },
+      ],
     });
 
-    const summary = response.output_text;
+    // ✅ SAFEST way to extract text
+    const summary =
+      response.output?.[0]?.content?.[0]?.text ||
+      "Unable to generate summary";
 
     res.json({ summary });
   } catch (error) {
-    console.error(error);
+    console.error("AI ERROR:", error);
     res.status(500).json({ error: "AI summary failed" });
   }
 });
